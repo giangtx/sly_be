@@ -4,16 +4,11 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import csurf from 'csurf';
 import cors from 'cors';
 
 import indexRouter from './routes/index';
 
 const app = express();
-const csrfMiddleware = csurf({
-  cookie: true
-});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -22,9 +17,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(csrfMiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use('/', indexRouter);
 
@@ -37,7 +37,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  console.log(err.message)
   // render the error page
   res.status(err.status || 500);
   res.json({ 'error': err.message });
