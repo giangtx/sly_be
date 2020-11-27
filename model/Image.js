@@ -18,10 +18,6 @@ const Image = sequelize.define(
       field: "url",
       type: Sequelize.STRING,
     },
-    path: {
-      field: "path",
-      type: Sequelize.STRING,
-    },
     type: {
       field: "type",
       type: Sequelize.INTEGER,

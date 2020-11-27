@@ -11,6 +11,7 @@ const getAll = async ({ size = 10, page = 1 }, createdBy) => {
     limit: parseInt(size),
     offset: size * (page - 1),
     distinct: true,
+    order: [["createdAt", "desc"]],
     include: [
       {
         model: User,
@@ -34,7 +35,7 @@ const getAll = async ({ size = 10, page = 1 }, createdBy) => {
       },
       {
         model: Image,
-        attributes: ["id", "name", "url", "path"],
+        attributes: ["id", "name", "url", ],
       },
     ],
   });
@@ -74,7 +75,7 @@ const getById = async (createdBy, id) => {
       },
       {
         model: Image,
-        attributes: ["id", "name", "url", "path"],
+        attributes: ["id", "name", "url", ],
       },
     ],
   });
@@ -89,8 +90,8 @@ const createPost = async ({
     content,
     type,
     createdBy,
-    idGroup: type !==1 ? idGroup : null,
-    createdAt: Date.now(),
+    idGroup: type ===3 ? idGroup : null,
+    createdAt: Date.now() + 3600000 * 7,
     isDelete: false,
     likes: 0,
     comment: 0,
@@ -126,7 +127,7 @@ const updatePost = async ({
       },
       {
         model: Image,
-        attributes: ["id", "name", "url", "path"],
+        attributes: ["id", "name", "url", ],
       },
     ]
   })
@@ -134,7 +135,7 @@ const updatePost = async ({
   if (post.user.id !== createdBy) throw new ApiError(httpStatus.NOT_FOUND, "only owner can update");
   await post.update({
     content: content ? content : post.content,
-    updatedAt: Date.now(),
+    updatedAt: Date.now() + 3600000 * 7,
     updatedBy: createdBy
   })
   return post;
@@ -151,7 +152,7 @@ const uploadImagePost = async (request, response) => {
         type: 2,
         createdBy: id,
         isDelete: false,
-        createdAt: Date.now(),
+        createdAt: Date.now() + 3600000 * 7,
         idPost: parseInt(request.params.id)
       })
     })
@@ -178,6 +179,7 @@ const getByUsername = async ({ username }, { size = 10, page = 1 }, createdBy) =
     },
     limit: parseInt(size),
     offset: size * (page - 1),
+    order: [["createdAt", "desc"]],
     distinct: true,
     include: [
       {
@@ -202,7 +204,7 @@ const getByUsername = async ({ username }, { size = 10, page = 1 }, createdBy) =
       },
       {
         model: Image,
-        attributes: ["id", "name", "url", "path"],
+        attributes: ["id", "name", "url", "type"],
       },
     ],
   });

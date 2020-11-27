@@ -15,7 +15,7 @@ router.route("/delete/:id")
 router.route("/image/:image")
   .get(postController.getImage);
 router.route("/user/:username")
-  .get(postController.getByUsername);
+  .get(verifyTokenCookie(), postController.getByUsername);
 router.route("/:id")
   .get(verifyTokenCookie(), postController.getById);
 

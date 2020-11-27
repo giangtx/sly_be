@@ -6,6 +6,7 @@ import chatRouter from './chat';
 import postRouter from './post';
 import commentRouter from './comment';
 import likeRouter  from './like';
+import friendRouter from "./friend";
 
 var router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/chat', chatRouter);
 router.use('/post', postRouter);
 router.use('/comment', commentRouter);
 router.use('/like', likeRouter);
+router.use('/friend', friendRouter);
 
 export default router;

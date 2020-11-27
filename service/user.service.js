@@ -1,4 +1,4 @@
-import { User, Role, Image } from "../model";
+import { User, Role, Image, Friend } from "../model";
 import ApiError from "../utils/ApiError";
 import httpStatus from "http-status";
 import { singleUpload } from "../utils/multipleUpload";
@@ -25,14 +25,9 @@ const getAll = async ({ size = 10, page = 1, search = "" }) => {
         model: Role,
         attributes: ["id", "roleName"],
       },
-      // {
-      //   model: MemberChat,
-      //   attributes: ["id", "type"],
-      //   include: {
-      //     model: Chat,
-      //     attributes: ["id", "name"],
-      //   },
-      // },
+      {
+        model: Friend,
+      },
     ],
     limit: parseInt(size),
     offset: size * (page - 1),
@@ -48,6 +43,7 @@ const getAll = async ({ size = 10, page = 1, search = "" }) => {
       "status",
       "birthday",
       "gender",
+      "description",
     ],
   });
   return {
@@ -94,6 +90,19 @@ const getByUsername = async ({ username }) => {
       {
         model: Role,
         attributes: ["id", "roleName"],
+      },
+      {
+        model: Friend,
+        limit: 12,
+        offset: 0,
+        distinct: true,
+        include: [
+          {
+            model: User,
+            as: "ban",
+            attributes: ["id", "username", "avatar", "description"],
+          },
+        ],
       },
     ],
     attributes: [
@@ -146,7 +155,7 @@ const updateUser = async (
     phone: phone ? phone : user.phone,
     gender: gender ? gender : user.gender,
     address: address ? address : user.address,
-    updatedAt: Date.now(),
+    updatedAt: Date.now() + 3600000 * 7,
   });
   return user;
 };
@@ -181,7 +190,7 @@ const changeAvatar = async (request, response) => {
     url: request.file.path,
     type: 1,
     createdBy: id,
-    createdAt: Date.now(),
+    createdAt: Date.now() + 3600000 * 7,
     isDelete: false,
   });
   return user;
@@ -198,7 +207,7 @@ const verifyAccount = async ({ verifyCode, email }) => {
     throw new ApiError(httpStatus.NOT_FOUND, "Incorrect code");
   await user.update({
     status: 1,
-    updatedAt: Date.now(),
+    updatedAt: Date.now() + 3600000 * 7,
   });
 };
 
@@ -270,6 +279,7 @@ const getInfo = async (id) => {
       "status",
       "birthday",
       "gender",
+      "description",
     ],
   });
 };
@@ -278,7 +288,7 @@ const getImageByUsername = async ({ username }) => {
   const user = await User.findOne({ where: { username } });
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, "user not exist");
   const images = await Image.findAll({
-    where: { createdBy: user.id, isDelete: false},
+    where: { createdBy: user.id, isDelete: false },
     limit: 9,
   });
   return images;
@@ -288,7 +298,6 @@ export default {
   getAll,
   getById,
   getByUsername,
-  updateUser,
   updateUser,
   changeAvatar,
   verifyAccount,

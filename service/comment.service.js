@@ -15,10 +15,12 @@ const getByPost = async (
       attributes: ["id", "username", "avatar"],
     },
     attributes: ["id", "content", "createdAt",],
-    order: [["createdAt", "asc"]],
+    order: [["createdAt", "desc"]],
   })
   return {
-    data: comments.rows,
+    data: comments.rows.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    }),
     size,
     length: comments.length,
     currentPage: page,
@@ -36,7 +38,7 @@ const createComment = async (
     content,
     idPost,
     createdBy,
-    createdAt: Date.now(),
+    createdAt: Date.now() + 3600000 * 7,
     isDelete: false,
   })
   await post.update({
@@ -70,7 +72,7 @@ const updateComment = async (
   await comment.update({
     content,
     updatedBy,
-    updatedAt: Date.now(),
+    updatedAt: Date.now() + 3600000 * 7,
   })
   return comment;
 }

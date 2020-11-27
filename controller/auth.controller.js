@@ -4,7 +4,7 @@ import * as authService from "../service/auth.service";
 export const login = catchAsync(async (request, response) => {
   const user = await authService.login(request.body);
   response.cookie("JWT", user.token, {
-    maxAge: 86400000,
+    maxAge: 86400000 * 7,
     httpOnly: true,
   });
   response.json({

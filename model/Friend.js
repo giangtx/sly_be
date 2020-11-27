@@ -19,6 +19,9 @@ const Friend = sequelize.define(
       field: "friend",
       type: Sequelize.INTEGER,
     },
+    // status = 1 là bạn bè
+    // status = 2 đang chờ đồng ý
+    // status = 3 chưa đồng ý
     status: {
       field: "status",
       type: Sequelize.INTEGER,

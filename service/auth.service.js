@@ -70,8 +70,9 @@ export const register = async ({
     lastname,
     status: 0,
     verifyCode: code,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
+    createdAt: Date.now() + 3600000 * 7,
+    updatedAt: Date.now() + 3600000 * 7,
+    avatar: "blank.jpg"
   });
   await newUser.addRole(3);
   mailer.sendMail(
