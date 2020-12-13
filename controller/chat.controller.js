@@ -10,6 +10,16 @@ const getAll = catchAsync(async (request, response) => {
   });
 });
 
+const getChatByUser = catchAsync(async (request, response) => {
+  const chats = await chatService.getChatByUser(request.jwtDecoded.id, request.query);
+  response.json({
+    status: 200,
+    data: chats,
+    message: "Success"
+  })
+})
+
 export default {
   getAll,
+  getChatByUser,
 };

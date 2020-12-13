@@ -44,7 +44,7 @@ const createComment = async (
   await post.update({
     comments: post.comments+1
   })
-  return PostComment.findOne({
+  return await PostComment.findOne({
     where: { id: comment.id },
     include: {
       model: User,

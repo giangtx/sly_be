@@ -217,7 +217,52 @@ const getByUsername = async ({ username }, { size = 10, page = 1 }, createdBy) =
     totalElements: posts.count,
   };
 }
-
+const getByGroup = async ({ idGroup }, { size = 10, page = 1 }, createdBy) => {
+  const posts = await Post.findAndCountAll({
+    where: {
+      isDelete: false,
+      idGroup
+    },
+    limit: parseInt(size),
+    offset: size * (page - 1),
+    order: [["createdAt", "desc"]],
+    distinct: true,
+    include: [
+      {
+        model: User,
+        attributes: ["id", "username", "avatar"],
+      },
+      {
+        model: PostComment,
+        as: "comment",
+        attributes: ["id", "content", "createdAt",],
+        include: {
+          model: User,
+          attributes: ["id", "username", "avatar"],
+        },
+      },
+      {
+        model: PostLike,
+        attributes: ["id", "status"],
+        as: "like",
+        where: { createdBy },
+        required: false
+      },
+      {
+        model: Image,
+        attributes: ["id", "name", "url", "type"],
+      },
+    ],
+  });
+  return {
+    data: posts.rows,
+    size,
+    length: posts.length,
+    currentPage: page,
+    totalpage: Math.ceil(posts.count / size),
+    totalElements: posts.count,
+  };
+}
 export default {
   getAll,
   getById,
@@ -226,4 +271,5 @@ export default {
   uploadImagePost,
   deletePost,
   getByUsername,
+  getByGroup,
 };

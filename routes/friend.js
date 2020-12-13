@@ -9,7 +9,10 @@ router.route("/user").
   get(verifyTokenCookie(), friendController.getFriend);
 router.route("/not").
   get(verifyTokenCookie(), friendController.getNotFriend);
-router.route("/approval").
-  get(verifyTokenCookie(), friendController.getApproval);
+router.route("/approval")
+  .get(verifyTokenCookie(), friendController.getApproval)
+  .post(verifyTokenCookie(), friendController.approvalFriend);
+router.route("/add/:id")
+  .post(verifyTokenCookie(), friendController.addFriend);
 
 export default router;

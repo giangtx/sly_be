@@ -39,9 +39,25 @@ const getApproval = catchAsync(async (request, response) => {
     message: "Success",
   });
 })
+const addFriend = catchAsync( async (request, response) => {
+  await friendService.addFriend(request.jwtDecoded.id, request.params.id)
+  response.json({
+    status: 200,
+    message: "Success",
+  });
+})
+const approvalFriend = catchAsync( async (request, response) => {
+  await friendService.approvalFriend(request.jwtDecoded.id, request.body);
+  response.json({
+    status: 200,
+    message: "Success",
+  });
+})
 export default {
   getAll,
   getFriend,
   getNotFriend,
-  getApproval
+  getApproval,
+  addFriend,
+  approvalFriend
 };

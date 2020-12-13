@@ -70,6 +70,14 @@ const getByUsername = catchAsync(async (request, response) => {
     message: "Success",
   })
 })
+const getByGroup = catchAsync(async (request, response) => {
+  const posts = await postService.getByGroup(request.params, request.query, request.jwtDecoded ? request.jwtDecoded.id : null);
+  response.json({
+    status: 200,
+    data: posts,
+    message: "Success",
+  })
+})
 
 export default {
   getAll,
@@ -79,5 +87,6 @@ export default {
   uploadImagePost,
   deletePost,
   getImage,
-  getByUsername
+  getByUsername,
+  getByGroup
 };
