@@ -10,6 +10,9 @@ router
   .post(verifyTokenCookie(), postController.createPost)
   .put(verifyTokenCookie(), postController.updatePost);
 router
+  .route("/admin")
+  .get(verifyTokenCookie(), postController.getAllAdmin)
+router
   .route("/upload/:id")
   .post(verifyTokenCookie(), postController.uploadImagePost);
 router

@@ -32,6 +32,7 @@ Post.belongsTo(User, { foreignKey: "created_by" });
 Post.hasMany(PostComment, { as: "comment", foreignKey: "id_post" });
 Post.hasMany(PostLike, { as: "like", foreignKey: "id_post" });
 Post.hasMany(Image, { foreignKey: "id_post" });
+Post.belongsTo(Groupuser, { foreignKey: "id_group"});
 
 PostComment.belongsTo(User, { foreignKey: "created_by" });
 PostComment.belongsTo(Post, { foreignKey: "id_post" });

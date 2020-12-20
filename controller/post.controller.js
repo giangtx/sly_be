@@ -10,7 +10,14 @@ const getAll = catchAsync(async (request, response) => {
     message: "Success",
   });
 });
-
+const getAllAdmin = catchAsync(async (request, response) => {
+  const posts = await postService.getAllAdmin(request.query, request.jwtDecoded.id);
+  response.json({
+    status: "Ok",
+    data: posts,
+    message: "Success",
+  });
+});
 const getById = catchAsync(async (request, response) => {
   const post = await postService.getById(request.jwtDecoded.id, request.params.id);
   response.json({
@@ -88,5 +95,6 @@ export default {
   deletePost,
   getImage,
   getByUsername,
-  getByGroup
+  getByGroup,
+  getAllAdmin
 };

@@ -44,7 +44,14 @@ const changeAvatar = catchAsync( async(request, response) => {
     message: 'change avatar success'
   })
 })
-
+const changeCoverImage = catchAsync( async(request, response) => {
+  const user = await userService.changeCoverImage(request, response);
+  response.json({
+    status: 200,
+    data: user,
+    message: 'change avatar success'
+  })
+})
 const getImage = catchAsync(async (request, response) => {
   const { image } = request.params;
   fs.readFile(`./store/image/user/${image}`, (err, data) => {
@@ -87,7 +94,30 @@ const getImageByUsername = catchAsync(async (request, response) => {
     message: "success",
   })
 })
-
+const blockUser = catchAsync( async (request, response) => {
+  const user = await userService.blockUser(request.params.id);
+  response.json({
+    status: 200,
+    data: user,
+    message: "success",
+  });
+})
+const unblockUser = catchAsync( async (request, response) => {
+  const user = await userService.unblockUser(request.params.id);
+  response.json({
+    status: 200,
+    data: user,
+    message: "success",
+  });
+})
+const getAllBlock = catchAsync(async (request, response) => {
+  const users = await userService.getAllBlock(request.query);
+  response.json({
+    status: 200,
+    data: users,
+    message: "Success",
+  });
+});
 export default {
   getAll,
   getById,
@@ -98,5 +128,9 @@ export default {
   verifyAccount,
   findUser,
   getInfo,
-  getImageByUsername
+  getImageByUsername,
+  changeCoverImage,
+  blockUser,
+  unblockUser,
+  getAllBlock
 };

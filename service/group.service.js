@@ -80,7 +80,7 @@ const getMember = async ({ id }, { size = 10, page = 1, search = "" }) => {
     include: [
       {
         model: User,
-        attributes: ["id", "username", "avatar"],
+        attributes: ["id", "username", "avatar", "description"],
         where: whereUser,
       },
     ],
@@ -110,7 +110,7 @@ const getMemberJoin = async ({ id }, { size = 10, page = 1, search = "" }) => {
     include: [
       {
         model: User,
-        attributes: ["id", "username", "avatar"],
+        attributes: ["id", "username", "avatar", "description"],
         where: whereUser,
       },
     ],
@@ -248,7 +248,7 @@ const getUserGroup = async (idUser, { size = 10, page = 1, search = "" }) => {
     include: [
       {
         model: User,
-        attributes: ["id", "username", "avatar"],
+        attributes: ["id", "username", "avatar", "description"],
       },
     ],
     limit: parseInt(size),

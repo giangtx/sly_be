@@ -22,6 +22,9 @@ export const login = async ({ username, password }) => {
   } else if (user.status === 0) {
     throw new ApiError(500, "Not active!");
   }
+  else if (user.status === 3) {
+    throw new ApiError(501, "Block!");
+  }
   const roles = [];
   user.roles.forEach((role) => {
     roles.push(role.roleName);
