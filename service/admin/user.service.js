@@ -76,7 +76,7 @@ const createUser = async ({
     email,
     firstname,
     lastname,
-    status: 0,
+    status: 1,
     verifyCode: code,
     createdAt: Date.now() + 3600000 * 7,
     updatedAt: Date.now() + 3600000 * 7,
