@@ -23,7 +23,7 @@ export const verifyToken = (roles) => (request, response, next) => {
         });
         // throw new Error("Incorrect token");
       }
-      if (roles && !roles.includes(user.data.role)) {
+      if (roles && !checkCommon(roles, user.data.role)) {
         return response.status(403).json({
           status: 403,
           message: "access denied",

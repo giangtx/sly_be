@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3007',
   credentials: true,
 };
 
@@ -62,7 +62,7 @@ app.set("port", port);
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3007",
   },
 });
 /**

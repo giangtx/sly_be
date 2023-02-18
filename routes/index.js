@@ -9,6 +9,7 @@ import likeRouter  from './like';
 import friendRouter from "./friend";
 import messageRouter from "./message";
 import groupRouter from "./group";
+import adminRouter from './admin';
 
 var router = express.Router();
 
@@ -22,5 +23,6 @@ router.use('/like', likeRouter);
 router.use('/friend', friendRouter);
 router.use('/message', messageRouter);
 router.use('/group', groupRouter);
+router.use('/admin', adminRouter);
 
 export default router;
