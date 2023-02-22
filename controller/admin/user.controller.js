@@ -28,11 +28,29 @@ const getById = catchAsync(async (request, response) => {
   })
 })
 const updateUser = catchAsync( async(request, response) => {
-  const user = await userService.updateUser(request.jwtDecoded.id, request.body)
+  const user = await userService.updateUser(request.body);
   response.json({
-      status: 200,
-      data: user,
-      message: 'update user success'
+    status: 200,
+    data: user,
+    message: 'update user success'
+  })
+})
+
+const updateUserDes = catchAsync(async(request, response) => {
+  const user = await userService.updateUserDes(request.body);
+  response.json({
+    status: 200,
+    data: user,
+    message: 'update user success'
+  })
+})
+
+const updateUsersStatus = catchAsync(async(request, response) => {
+  console.log('update status')
+  await userService.updateUsersStatus(request.body);
+  response.json({
+    status: 200,
+    message: 'update user success'
   })
 })
 
@@ -40,5 +58,7 @@ export default {
   getAll,
   createUser,
   getById,
-  updateUser
+  updateUser,
+  updateUserDes,
+  updateUsersStatus
 }

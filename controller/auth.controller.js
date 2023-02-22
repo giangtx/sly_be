@@ -1,5 +1,6 @@
 import catchAsync from "../utils/catchAsync";
 import * as authService from "../service/auth.service";
+import httpStatus from "http-status";
 
 export const login = catchAsync(async (request, response) => {
   const user = await authService.login(request.body);
@@ -11,6 +12,7 @@ export const login = catchAsync(async (request, response) => {
     tokenType: "Bearer",
     user: user.user,
     token: user.token,
+    status: httpStatus.OK
   });
 });
 export const register = catchAsync(async (request, response) => {

@@ -6,18 +6,30 @@ import bcrypt from "bcrypt";
 const Op = Sequelize.Op;
 
 
-const getAll = async ({ size = 10, page = 1, search = "" }) => {
+const getAll = async ({ size = 10, page = 1, search = "", status = null, startDate = '', endDate = '' }) => {
   let where = {
     isDelete: false,
-    status: 1,
   };
   if (search !== "") {
-    where = {
-      isDelete: false,
-      status: 1,
-      [Op.or]: [
-        { username: { [Op.like]: `%${search}%` } },
-      ],
+    where[Op.or] = [
+      { username: { [Op.like]: `%${search}%` } },
+      { email: { [Op.like]: `%${search}%` } },
+    ]
+  }
+  if (status) {
+    where.status = status;
+  }
+  if (startDate && endDate) {
+    where.created_at = {
+      [Op.between]: [startDate, endDate],
+    };
+  } else if (startDate) {
+    where.created_at = {
+      [Op.gte]: startDate,
+    };
+  } else if (endDate) {
+    where.created_at = {
+      [Op.lte]: endDate,
     };
   }
   const users = await User.findAndCountAll({
@@ -115,8 +127,7 @@ const getById = async ({ id }) => {
 };
 
 const updateUser = async (
-  id,
-  { firstname, lastname, birthday, phone, gender, address, description }
+  { id, firstname, lastname, birthday, phone, gender, address, description }
 ) => {
   const user = await User.findOne({
     where: { id },
@@ -158,10 +169,44 @@ const updateUser = async (
   return user;
 };
 
+const updateUserDes = async ({ id, description }) => {
+  const user = await User.findOne({
+    where: { id },
+    attributes: [
+      "id",
+      "username",
+      "email",
+      "firstname",
+      "lastname",
+      "avatar",
+      "phone",
+      "status",
+      "birthday",
+      "gender",
+      "description",
+      "coverImage",
+      "address",
+    ],
+  });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "user not found");
+  }
+  await user.update({
+    description: description ? description : user.description,
+    updatedAt: Date.now() + 3600000 * 7,
+  });
+  return user;
+}
+
+const updateUsersStatus = async ({ ids, status }) => {
+  await User.update({ status }, {where: { id: ids} });
+};
 
 export default {
   getAll,
   createUser,
   getById,
-  updateUser
+  updateUser,
+  updateUserDes,
+  updateUsersStatus,
 }

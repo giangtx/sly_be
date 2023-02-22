@@ -1,6 +1,6 @@
 import express from "express";
 import userController from "../controller/user.controller";
-import { verifyTokenCookie } from "../utils/jwtToken";
+import { verifyToken, verifyTokenCookie } from "../utils/jwtToken";
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.route("/image/:image").get(userController.getImage);
 router.route("/listImage/:username").get(userController.getImageByUsername);
 router.route("/verify").post(userController.verifyAccount);
 router.route("/find").get(userController.findUser);
-router.route("/info").get(verifyTokenCookie(), userController.getInfo);
+router.route("/info").get(verifyToken(), userController.getInfo);
 router
   .route("/block")
   .get(verifyTokenCookie(), userController.getAllBlock);
